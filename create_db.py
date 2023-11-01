@@ -1,4 +1,5 @@
 from config import connect
+from models import *
 
 from psycopg2 import errors
 try:
@@ -54,3 +55,10 @@ try:
         print("The table was created!")
 except errors.DuplicateTable:
     print("The table MESSAGES is already exist")
+
+print("Dodanie dannych:")
+name = input("User name: ")
+pasw = input("Password: ")
+person = User(name, pasw)
+person.save_to_db(cursor)
+connection.close()
