@@ -1,5 +1,6 @@
 from config import connect
 from models import *
+import argparse
 
 from psycopg2 import errors
 try:
@@ -7,7 +8,13 @@ try:
     cursor = connection.cursor()
 except errors.OperationalError:
     print("Incorrect server connection. Check the settings")
-
+MENU = """
+    0 - exit
+    1 - Twotzenie użytkownika
+    2 - Edycja hasła użytkownika
+    3 - Usuwanie użytkownika
+    4 - Listowanie użytkowników
+"""
 
 try:
     query_1 = """
@@ -55,6 +62,27 @@ try:
         print("The table was created!")
 except errors.DuplicateTable:
     print("The table MESSAGES is already exist")
+status_app = True
+while status_app:
+    action = int(input(MENU))
+    print("Your choice is", action)
+    if action == 0:
+        status_app = False
+    if action == 1:
+        print("Dodanie dannych:")
+        name = input("User name: ")
+        pasw = input("Password: ")
+        persons = User()
+        names = persons.load_all_users(cursor)
+        if name not in names and len(pasw) >= 8:
+            new_person = User(name, pasw)
+            new_person.save_to_db(cursor)
+            connection.close()
+        else:
+            if name in names:
+                print("Your name is already exists")
+            elif len(pasw) < 8:
+                print("Short password")
 
 # print("Dodanie dannych:")
 # name = input("User name: ")
@@ -72,5 +100,5 @@ except errors.DuplicateTable:
 # mess = Messages(6, 2, '2023-04-22 17:45', "I'm ready for calling!")
 # mess.save_to_db(cursor)
 # connection.close()
-l = Messages()
-print(l.load_messages(cursor))
+# l = Messages()
+# print(l.load_messages(cursor))

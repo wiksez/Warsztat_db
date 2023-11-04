@@ -1,10 +1,9 @@
-
+from clcrypto import hash_password
 class User:
     def __init__(self, username = "", password = "", salt = ""):
         self._id = -1
         self.username = username
-       # self._hashed_password = hash_password(password, salt)
-        self._hashed_password = password
+        self._hashed_password = hash_password(password, salt)
     @property
     def id(self):
         return self._id
@@ -13,8 +12,7 @@ class User:
         return self._hashed_password
 
     def set_password(self, password, salt=""):
-        # self._hashed_password = hash_password(password, salt)
-        self._hashed_password = password
+        self._hashed_password = hash_password(password, salt)
 
     @hashed_password.setter
     def hashed_password(self, password):
@@ -80,7 +78,7 @@ class User:
             loaded_user._id = id_
             loaded_user.username = username
             loaded_user._hashed_password = hashed_password
-            users.append(loaded_user)
+            users.append(username)
         return users
     def delete(self, cursor):
         sql = "DELETE FROM Users WHERE id=%s"
