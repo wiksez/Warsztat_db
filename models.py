@@ -87,3 +87,38 @@ class User:
         cursor.execute(sql, (self.id,))
         self._id = -1
         return True
+
+
+class Messages:
+    def __init__(self, from_id="", to_id="", creation_date=None, text=""):
+        self._id = -1
+        self.from_id = from_id
+        self.to_id = to_id
+        self.text = text
+        self.creation_date = creation_date
+
+    @property
+    def id(self):
+        return self._id
+
+    def save_to_db(self, cursor):
+        if self.id == -1:
+            sql = """
+            INSERT INTO messages(from_id, to_id, creation_date, text) 
+            VALUES(%s, %s, %s, %s) RETURNING id
+            """
+            values = (self.from_id, self.to_id, self.creation_date, self.text)
+            cursor.execute(sql, values)
+            self._id = cursor.fetchone()[0]
+            return True
+        return False
+    @staticmethod
+    def load_messages(cursor):
+        sql = "select text from messages;"
+        cursor.execute(sql)
+        messages = []
+        for row in cursor.fetchall():
+            text = row
+            messages.append(text)
+        return messages
+

@@ -44,8 +44,8 @@ try:
             id serial Primary key,
             from_id integer,
             to_id integer,
-            foreign key (from_id) references messages (id),
-            foreign key (to_id) references messages (id),
+            foreign key (from_id) references users (id),
+            foreign key (to_id) references users (id),
             creation_date timestamp,
             text varchar(255)
         );
@@ -62,9 +62,15 @@ except errors.DuplicateTable:
 # person = User(name, pasw)
 # person.save_to_db(cursor)
 # connection.close()
-name = User()
-a = name.load_user_by_username(cursor, 'Harry')
-b = name.load_user_by_id(cursor, 6)
-b.delete(cursor)
-print(name.load_all_users(cursor))
-connection.close()
+# name = User()
+# a = name.load_user_by_username(cursor, 'Harry')
+# b = name.load_user_by_id(cursor, 6)
+# b.delete(cursor)
+# print(name.load_all_users(cursor))
+# connection.close()
+
+# mess = Messages(6, 2, '2023-04-22 17:45', "I'm ready for calling!")
+# mess.save_to_db(cursor)
+# connection.close()
+l = Messages()
+print(l.load_messages(cursor))
