@@ -60,7 +60,7 @@ class User:
         if data:
             id_, username, hashed_password = data
             loaded_user = User()
-            loaded_user._id = id
+            loaded_user._id = id_
             loaded_user.username = username
             loaded_user._hashed_password = hashed_password
             return loaded_user
@@ -81,8 +81,8 @@ class User:
             users.append(username)
         return users
     def delete(self, cursor):
-        sql = "DELETE FROM Users WHERE id=%s"
-        cursor.execute(sql, (self.id,))
+        sql = "DELETE FROM Users WHERE username=%s"
+        cursor.execute(sql, (self.username,))
         self._id = -1
         return True
 
